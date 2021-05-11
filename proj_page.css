@@ -1,0 +1,166 @@
+h1{
+   	color: #05687A;
+   	text-align: left;
+}
+h2{
+	background-color:#D6F1B9;
+	padding-left:20px;	
+	color: #709399
+}
+.examples{margin: 0 auto}
+body {
+	line-height: 20px;
+	text-align: center;
+	font-family:  Arial, 'Trebuchet MS', Helvetica, sans-serif;
+}
+h3{
+   	background-color: #D8E6CB;
+   	color: #1768F7;
+   	padding-left: 10px;
+}
+.explain{
+   	color: #008080;
+   	margin: 5px auto;
+   	font-weight: bold;
+   	font-style: oblique;
+   	text-align: center;
+}
+.incenter
+{
+	text-align: center;
+}
+.container{
+    margin:0 auto;
+   	padding: 1px 4px;
+   	width: 800px;
+   	text-align: left;
+}
+.command
+{
+	font-style:oblique;color:blue
+}
+.highlight
+{
+   	font-weight: bold;
+   	font-style: oblique;
+   	color: #808000;
+   }
+
+p{
+   	margin: 0;
+   	text-indent: 20px;
+}
+.download{
+	font-weight:bolder;
+	color:rgb(72, 100, 65);
+}
+.navig{text-align:right;}
+
+hr
+{
+	margin-top: 25px;
+}
+.lastupdated
+{
+	text-align: right;
+}
+
+a, a:visited, a:active {
+	color: #709399;
+	text-decoration: none;
+}
+a:hover{
+	text-decoration: underline;
+}
+
+.one-imagebox{
+	text-align: center;
+	display: table;
+    margin: 0 auto;
+	margin-top: 4px;
+}
+.one-imagebox img{
+	max-width: 550px;
+	max-height: 550px;
+}
+
+.image-desc{
+	margin-top:4px;
+	text-align: center;
+}
+
+.image-bottom-desc{
+	margin-top:4px;
+	text-align: center;
+	margin-bottom: 10px;
+}
+
+.twoone-imagebox{
+	text-align: center;
+	display: table;
+    margin: 0 auto;
+	margin-top:4px;
+}
+.twoone-imagebox img{
+	max-width: 350px;
+	max-height: 350px;
+}
+
+.twoone-imagebox td{
+	text-align: center;
+}
+
+.pyramid-imagebox{
+	text-align: center;
+}
+
+.pyramid-imagebox img{
+	max-width: 150px;
+	max-height: 150px;
+}
+
+.video-prev img {
+	max-width: 240px;
+	max-height: 160px;
+}
+
+.center-div
+{
+	text-align: center;
+	margin-top:5px;
+}
+
+.quote-it
+{
+	font-style: italic;
+}
+
+.c-class, .c-func, .c-file
+{
+	color: blue;
+}
+.c-inline
+{
+	color: darkblue;
+	font-style: italic;
+}
+.c-book
+{
+	font-weight: bold;
+	font-style: italic;
+	color:#008080;
+}
+
+.ul-none
+{
+	list-style-type: none;
+}
+
+.bracket-ol {
+  counter-reset: o-counter;
+  list-style-type: none;
+}
+.bracket-ol li:before {
+  content: '[' counter(o-counter) '] ';
+  counter-increment: o-counter;
+}

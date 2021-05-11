@@ -1,0 +1,144 @@
+﻿<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <title>YGL Graphics Library</title>
+   <link type="text/css" rel="stylesheet" href="../proj_page.css" />
+</head>
+
+<body>
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-KBZT6S"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KBZT6S');</script>
+<!-- End Google Tag Manager -->
+
+<div class="container">
+<div class="navig">
+<a href="../../index.html">Back</a>
+</div>
+<h1>YGL Graphics Library</h1>
+<h2>About</h2>
+<p>
+YGL is a project that I started when I took the undergraduate Compute Graphics course. My goal was to implement the entire OpenGL 1.1 pipeline. I picked up the project again in my graduate Compute Graphics course.
+</p>
+
+<h2>Features</h2>
+<p>
+YGL implements most rendering related interfaces in OpenGL 1.1 specification:
+</p>
+<ul>
+<li>Point, Line and Polygon primitives</li>
+<li>2D texture mapping with perspective correction</li>
+<li>Two-sided lighting</li>
+<li>Back-face culling</li>
+<li>Alpha blending</li>
+<li>Fogging</li>
+<li>And more... please refer to ygl.h</li>
+<li>These components are not implemented: glDrawPixels, glCopyPixels, Display List, Slection, Feedback, Accumulation Buffer etc.</li>
+</ul>
+
+<h2>Pipeline</h2>
+<p>
+The sequence below describes the YGL pipeline (optionally denoted with the underlying algorithms):
+</p>
+<ol>
+<li>
+Specify Vertices
+</li><li>Apply Model-view matrix which transform vertices and normals to Camera Space
+</li><li>Per-vertex lighting
+</li><li>Apply Perspective matrix to transform vertices to Homogeneous Space (also as Clip Space later)
+</li><li>Primitive assembling (group vertices to lines, triangles, quads or polygons)
+</li><li>Clipping (line clipping: Liang-Barsky, polygon-clipping: Sutherland-Hodgman)
+</li><li>Perspective division and viewport transform (now vertices are in Window Coordinates Space)
+</li><li>Backface culling
+</li><li>Rasterization and texturing (line: Bresenham, polygon: convert to triangle-fan and use Scanline algorithm)
+</li><li>Fogging
+</li><li>Per-fragment operation (Scissor test-> Alpha test -> Stencil test -> Depth test -> Alpha blending -> Logical operations)
+</li><li>Write color to frame buffer and draw onto the screen
+</li>
+</ol>
+
+<h2>Usage</h2>
+<p>YGL is compatible with GLUT, but remember to include ygl.h first, e.g.:</p>
+
+<!-- HTML generated using hilite.me -->
+<div style="margin-top: 8px;background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #557799">#include &quot;ygl.h&quot;</span>
+<span style="color: #557799">#include &quot;yglu.h&quot;</span>
+<span style="color: #008800; font-weight: bold">using</span> <span style="color: #008800; font-weight: bold">namespace</span> ygl;
+<span style="color: #557799">#include &lt;gl/glut.h&gt;</span>
+</pre></div>
+
+<h2>Demos</h2>
+<p>All the tests run on Intel Core i5-2300 @ 2.80GHz; window size: 512 by 512.</p>
+
+<div class="one-imagebox">
+<img src="texbox.png"/>
+<div class="image-bottom-desc">
+FPS: 104 (smooth shading, 1 light, texture, perspective correction, bilinear filter, fogging)
+</div>
+</div>
+
+<div class="one-imagebox">
+<img src="bunny.png"/>
+<div class="image-bottom-desc">
+FPS: 100 (faces: 5K)
+</div>
+</div>
+
+<div class="one-imagebox">
+<img src="head.png"/>
+<div class="image-bottom-desc">
+FPS: 30 (faces: 18K, 2 lights)
+</div>
+</div>
+
+<div class="one-imagebox">
+<img src="killeroo.png"/>
+<div class="image-bottom-desc">
+FPS: 26 (faces: 23K, 2 lights)
+</div>
+</div>
+<br>
+<p>
+The example below is from <a href="http://www.opengl.org/archives/resources/code/samples/glut_examples/contrib/contrib.html" target=_blank>OpenGL website</a>, and I use it to validate YGL's pipeline. It's a program showing an animation, with lighting and shadow effect. It's able to run with YGL by simply changing the display lists to C marcos in the code.
+</p>
+<div class="one-imagebox">
+<img src="animation.png"/>
+</div>
+
+<h2>Source code</h2>
+<p>[<a target=_blank href="https://github.com/codedhead/ygl">github</a>]</p>
+
+<h2>Acknowledgments</h2>
+<p>The bunny model is from Stanford 3D Scanning Repository; the killeroo model is from Princeton Shape Benchmark Repository; the head model is from Infinite Realities; the MOTH program is from OpenGL's GLUT examples archives.
+</p>
+
+<h2>Reference</h2>
+<ol class="bracket-ol">
+<li>
+<a target=_blank href="http://www.opengl.org/registry">OpenGL 1.1~1.5 specification</a>
+</li><li>
+Blinn, James F., and Martin E. Newell. "Clipping using homogeneous coordinates." ACM SIGGRAPH Computer Graphics. Vol. 12. No. 3. ACM, 1978.
+</li><li>
+<a target=_blank href="http://en.wikipedia.org/wiki/Liang%E2%80%93Barsky_algorithm">Liang-Barsky Algorithm</a>, Wikipedia
+</li><li>
+<a target=_blank href="http://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm">Bresenham's line algorithm</a>, Wikipedia
+</li><li>
+<a target=_blank href="http://chrishecker.com/Miscellaneous_Technical_Articles">Perspective Texture Mapping</a>, Wikipedia
+</li><li>
+<a target=_blank href="http://msdn.microsoft.com/en-us/library/windows/desktop/bb147314(v=vs.85).aspx ">Rasterization Rules</a>, Microsoft 
+</li>
+</ol>
+
+<hr>
+<div class="lastupdated">
+Last updated 12/9/2014
+</div>
+</div>
+</body>
+</html>

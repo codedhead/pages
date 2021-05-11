@@ -1,0 +1,422 @@
+﻿<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <title>Tracy</title>
+   <link type="text/css" rel="stylesheet" href="../proj_page.css" />
+   
+   <style type="text/css">
+  /*body{ font-family: font-family: verdana,arial,sans-serif !important; }*/
+	table.simpletable 
+	{
+		margin-top: 7px;
+		margin-bottom: 7px;
+		font-family: verdana,arial,sans-serif;
+		font-size:11px;
+		color:#333333;
+		border-width: 1px;
+		border-color: #666666;
+		border-collapse: collapse;
+	}
+	table.simpletable th {
+		border-width: 1px;
+		padding: 8px;
+		border-style: solid;
+		border-color: #666666;
+		background-color: #f0f0f0; /*#dedede;*/
+	}
+	table.simpletable td {
+		border-width: 1px;
+		padding: 8px;
+		border-style: solid;
+		border-color: #666666;
+		background-color: #ffffff;
+		text-align: center;
+	}
+	table .td-highlight {
+		color: red;
+	}
+   </style>
+   
+</head>
+<body>
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-KBZT6S"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KBZT6S');</script>
+<!-- End Google Tag Manager -->
+
+<div class="container">
+<div class="navig">
+<a href="../../index.html">Back</a>
+</div>
+
+<h1>Tracy Renderer</h1>
+
+<h2>About</h2>
+<p>
+Tracy is my physically based renderer, the name comes from <em>trace</em> and y(initial of my family name). Writing a renderder maybe the most exciting and enjoyable experience for graphics students. I started to code a Whitted-style ray tracer following the book <span class="c-book">Ray Tracing from groud up</span>; then I turned to Path Tracing following the book <span class="c-book">Physically Based Rendering</span>, and BDPT(Bidirectional Path Tracing) following Eric Veach's thesis. Recently I ported it to GPU under NVIDIA's OptiX framework.
+</p>
+<h2>Features</h2>
+<ul>
+<li>
+Basic primitives, .obj meshes(optionally with .mtl material file)
+</li>
+<li>
+Textures, Normal Map, Alpha Mask
+</li>
+<li>
+Materials: Lambertian, Phong, Blinn, Mirror, Metal, Dielectric
+</li>
+<li>
+Light sources: Point Light, Directional Light, Area Light, Environment Map
+</li>
+
+<li>
+Rendering algorithms: Path Tracing, BDPT, PPM, PSSMLT
+</li>
+
+<li>
+Multiple Importance Sampling
+</li>
+
+<li>
+GPU accelerated Path Tracing with NVIDIA OptiX, runs at interactive rates for a moderately complex scene (e.g Crytek Sponza); over 5 times faster than Mitsuba.
+</li>
+
+<li>
+Able to parse Mitsuba's scene files; with my utility tool <a href="https://github.com/codedhead/pbrt2mts" target=_blank>pbrt2mts</a> which converts PBRT scenes to Mitsuba's, Tracy can also load PBRT scenes files. (the San Miguel scene below is converted from PBRT)
+</li>
+</ul>
+
+<h2>Sample Images</h2>
+<h3>Path Tracing</h3>
+
+<div class="twoone-imagebox">
+<table>
+<tr>
+<td>
+	<img src="cbox1.png"/>
+	<div>Cornell box</div>
+</td>
+<td>
+	<img src="cbox2.png"/>
+	<div>Cornell box with specular materials</div>
+</td>
+</tr>
+
+<tr>
+<td colspan=2>
+<img style="max-width:512px" src="dof.png"/>
+<div>Depth of Field</div>
+</td>
+</tr>
+</table>
+
+</div>
+
+<div class="one-imagebox">
+<img src="kitchen_spp2048.png"/>
+<div class="image-bottom-desc">
+Kitchen scene, SPP: 2048 (Global Illumination, Glossy Compound Material, Texture, Point Light)
+</div>
+</div>
+
+<div class="one-imagebox">
+<img src="sam_cam14_spp1024.png"/>
+<div class="image-bottom-desc">
+San Miguel scene, SPP: 1024 (Global Illumination, Environment Map Lighting, Specular material, Texture, Alpha Mask)
+</div>
+</div>
+
+<div class="one-imagebox">
+<img src="sam_closeup_spp1024.png"/>
+<div class="image-bottom-desc">
+San Miguel scene close-up view, SPP: 1024
+</div>
+</div>
+
+<h3>BDPT</h3>
+
+<p>
+I proposed a new BDPT algorithm, One-sample BDPT, based on MIS's one sample model. This algorithm preserves the low-variance advantage of MIS technique, and constructs a single BDPT sample faster than the state-of-the-art GPU BDPT algorithm, Streaming BDPT[8], thus is better suited for interactive application. More details are coming in my Master thesis.
+</p>
+
+<div class="one-imagebox">
+<img src="bdpt/path.png"/>
+<div class="image-bottom-desc">
+Path Tracing the glass egg scene (SPP: 1024)
+</div>
+</div>
+
+<div class="one-imagebox">
+<img src="bdpt/bdpt.png"/>
+<div class="image-bottom-desc">
+BDPT (SPP: 1024)
+</div>
+</div>
+
+<div class="one-imagebox">
+<img src="bdpt/pt_vs_bdpt.png"/>
+<div class="image-bottom-desc">
+PT V.S. BDPT (same time)
+</div>
+</div>
+
+<div>
+<table class="pyramid-imagebox">
+<tr><td>
+<img src="bdpt/s1t2.png"/>
+<img src="bdpt/s2t1.png"/>
+</td></tr>
+
+<tr><td>
+<img src="bdpt/s1t3.png"/>
+<img src="bdpt/s2t2.png"/>
+<img src="bdpt/s3t1.png"/>
+</td></tr>
+
+<tr><td>
+<img src="bdpt/s1t4.png"/>
+<img src="bdpt/s2t3.png"/>
+<img src="bdpt/s3t2.png"/>
+<img src="bdpt/s4t1.png"/>
+</td></tr>
+
+<tr><td>
+<img src="bdpt/s1t5.png"/>
+<img src="bdpt/s2t4.png"/>
+<img src="bdpt/s3t3.png"/>
+<img src="bdpt/s4t2.png"/>
+<img src="bdpt/s5t1.png"/>
+</td></tr>
+
+<!--tr><td>
+<img src="bdpt/s1t6.png"/>
+<img src="bdpt/s2t5.png"/>
+<img src="bdpt/s3t4.png"/>
+<img src="bdpt/s4t3.png"/>
+<img src="bdpt/s5t2.png"/>
+<img src="bdpt/s6t1.png"/>
+</td></tr-->
+
+</table>
+<div class="image-bottom-desc">
+The pyramid shows contribution from paths of various lengths
+</div>
+</div>
+
+<h3>Progressive Photon Mapping</h3>
+<p>
+Following results show PPM's effectiveness in sampling paths that are difficult for Path Tracing. Since the lights are placed behind glass, the scene is dominated by caustics.
+</p>
+
+<div class="one-imagebox">
+<img src="ppm/box_ppm25.6m.png"/>
+<div class="image-bottom-desc">
+Box scene, by PPM (Eye Ray SPP: 64, Photons: 25.6M, Time: ~5min)
+</div>
+</div>
+
+<div class="one-imagebox">
+<img src="ppm/box_pt1024.png"/>
+<div class="image-bottom-desc">
+Path Tracing, brightness scaled by 2^8 (SPP: 1024, Time: ~2min)
+</div>
+</div>
+
+<h3>PSSMLT</h3>
+
+<div class="one-imagebox">
+<img src="pssmlt.png"/>
+<div class="image-bottom-desc">
+SPP: 1024
+</div>
+</div>
+
+<h3>Multiple Importance Sampling</h3>
+
+<div>
+<div class="twoone-imagebox">
+<table>
+<tr>
+<td>
+	<img src="mis/bsdf.png"/>
+	<div>Sampling BSDF</div>
+</td>
+<td>
+	<img src="mis/light.png"/>
+	<div>Sampling Light Sources</div>
+</td>
+</tr>
+
+<tr>
+<td colspan=2>
+<img src="mis/mis.png"/>
+<div>MIS</div>
+</td>
+</tr>
+</table>
+
+</div>
+
+
+<div class="image-bottom-desc">
+Multiple Importance Sampling effectively combines the two sampling techniques
+</div>
+</div>
+
+<h3>Environment Map Illumination</h3>
+<p>
+Importance sampling the environment map requires generating more samples in brighter area. The traditional method, namely the inversion method on a 2D discrete distribution, is implemented in both PBRT and Mitsuba.
+</p>
+<p>
+Besides its sophisticated implementation details, the traditional method can only importance sample the environment map globally. When computing Direct Lighting, the method would possibly sample a pixel on the map that is located in the lower hemisphere of current shading point, which doesn't make contribution at all thus lead to inefficiency.
+</p>
+<p>
+I developed an importance sampling method based on the Metropolis-Hastings algorithm. The M-H algorithm is a general algorithm for sampling any sophisticated distribution, and in this context, I just use pixel intensity as the function value. The transition rule is composed of two mutation strategies:
+<ul>
+<li>
+The first is to uniformly sample a pixel in the upper hemisphere of current shading point. This mutation strategy ensures ergodicity, and avoid samples being stuck in a small area.
+</li>
+<li>
+The other is to slightly perturb current pixel position. This mutation strategy is good at exploring local region with large pixel intensity.
+</li>
+</ul>
+The two mutations are both symmetric, so the acceptance probability is just f_new/f_old, namely the ratio of new pixel intensity and old pixel intensity. The method is very simple to implement and it only samples pixels in the upper hemisphere thus does not waste samples.
+</p>
+<div class="one-imagebox">
+<img src="ennis.png"/>
+<div class="image-desc">
+Input environment map
+</div>
+</div>
+
+<div class="one-imagebox">
+<img src="ennis_distr.png"/>
+<div class="image-desc">
+Importance Sampling by traditional 2D distribution method (the whole image is sampled for all shading points)
+</div>
+</div>
+
+<div class="one-imagebox">
+<img src="ennis_metro.png"/>
+<div class="image-desc">
+Importance Sampling by proposed method based on M-H algorithm (only the upper hemisphere is sampled for current shading point)
+</div>
+</div>
+
+<h2>Timings</h2>
+<div>
+<p>
+Timings for Path Tracing in several scenes.
+</p>
+<ul>
+<li>
+Tested on Intel Core i5-4430 (16GB memory), NVIDIA GeForce GTX 760 (4GB memory).
+</li><li>Tracy was compiled with CUDA 6.5 + OptiX 3.7.0.
+</li><li>Mitsuba run on 4 cores with SSE2 enabled.
+</li>
+</div>
+
+<div>
+<table style="margin-left:40px" class="simpletable">
+
+<thead>
+<tr>
+<th>Scene</th>
+<th>Resolution</th>
+<th>Max Path Length</th>
+<th>SPP</th>
+<th>Tracy</th>
+<th>Mitsuba</th>
+<th>Speed-up</th>
+</tr>
+</thead>
+
+
+<tbody>
+<tr>
+<td>Cornell Box</td>
+<td>512x512</td>
+<td>6</td>
+<td>256</td>
+<td>9.9s</td>
+<td>49.6s</td>
+<td class="td-highlight">5.01</td>
+</tr>
+
+<tr>
+<td>Crytek Sponza</td>
+<td>720x480</td>
+<td>3</td>
+<td>256</td>
+<td>22.7s</td>
+<td>140.1s</td>
+<td class="td-highlight">6.17</td>
+</tr>
+
+<tr>
+<td>Kitchen</td>
+<td>720x480</td>
+<td>4</td>
+<td>256</td>
+<td>18.2s</td>
+<td>111.2s</td>
+<td class="td-highlight">6.11</td>
+</tr>
+
+<tr>
+<td>Conference</td>
+<td>640x480</td>
+<td>4</td>
+<td>256</td>
+<td>14.5s</td>
+<td>90.3s</td>
+<td class="td-highlight">6.23</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2>Source Code</h2>
+<p>[<a href="https://github.com/codedhead/tracy" target=_blank>github</a>]</p>
+
+<h2>Acknowledgments</h2>
+<p>The Cornell box scene, glass egg scene and MIS scene are from Mitsuba; the kithcen scene is from Peiran Ren; the San Miguel scene was modeled by Guillermo M. Leal Llaguno, and I converted it from PBRT's scene format; the Dragon scene was also converted from PBRT's scene format; the Box scene was modeled by Toshiya Hachisuka.
+</p>
+
+
+<h2>Reference</h2>
+<ol class="bracket-ol">
+<li>
+<a target=_blank href="http://www.raytracegroundup.com/">Ray Tracing from the Ground Up</a>, by Kevin Suffern
+</li><li>
+<a target=_blank href="http://www.pbrt.org/">Physically Based Rendering</a>, 2nd Edition, by Matt Pharr and Greg Humphreys
+</li><li>
+Veach, Eric. <a target=_blank href="https://graphics.stanford.edu/papers/veach_thesis">Robust Monte Carlo methods for light transport simulation</a>. Diss. Stanford University, 1997.
+</li><li>
+<a target=_blank href="http://www.mitsuba-renderer.org/index.html">Mitsuba Renderer</a>, by Wenzel Jakob
+</li><li>
+Hachisuka, Toshiya, Shinji Ogaki, and Henrik Wann Jensen. "Progressive photon mapping." ACM Transactions on Graphics (TOG). Vol. 27. No. 5. ACM, 2008.
+</li><li>
+Kelemen, Csaba, et al. "A simple and robust mutation strategy for the metropolis light transport algorithm." Computer Graphics Forum. Vol. 21. No. 3. 2002.
+</li><li>
+<a target=_blank href="https://developer.nvidia.com/optix">NVIDIA OptiX</a> 
+</li>
+<li>
+Van Antwerpen D. Recursive mis computation for streaming bdpt on the gpu[R]. Technical report, Delft University of Technology, 2011.
+</li>
+</ol>
+
+<hr>
+<div class="lastupdated">
+Last updated 6/29/2015
+</div>
+</div>
+</body>
+</html>
